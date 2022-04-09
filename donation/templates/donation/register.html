@@ -1,0 +1,41 @@
+{% extends "donation/layout.html" %}
+{% load static %}
+{% block body %}
+
+    {% if message %}
+        <div>{{ message }}</div>
+    {% endif %}
+
+    <form action="{% url 'register' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <input class="form-control" autofocus type="text" name="username" placeholder="Username">
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="password" name="password" placeholder="Password">
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="email" name="email" placeholder="Email Address">
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="text" name="first_name" placeholder="First Name">
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="text" name="last_name" placeholder="Last Name">
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="text" name="location_country" placeholder="Country">
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="text" name="location_city" placeholder="City">
+        </div>
+        <input class="register btn btn-primary" type="submit" value="Register">
+    </form>
+    <div class="loginRegister">
+        Already have an account? <a href="{% url 'login' %}">Log In here.</a>
+    </div>
+    
+{% endblock %}
