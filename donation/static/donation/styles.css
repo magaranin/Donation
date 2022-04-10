@@ -1,1 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #fafafa;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    margin: 20px;
+}
+
+.navbar .navbar-brand {
+    color: red;
+}
+
+img {
+    width: 900px;
+    height: 620px;
+    object-fit: cover;
+}
+
+.carousel {
+    height: 620px;
+    width: 900px;
+    overflow: hidden;
+}
+
+.image-container {
+    display: flex; /* put img into a horizontal flex row */
+    transform: translateX(0);
+    transition: transform 0.5s ease-in-out;
+    margin-top: 50px;
+}
+
+.flex-container {
+    display: inline-flex;
+}
+
+.message-donations {
+    margin: 50px;
+}
+
+.message {
+    text-align: center;
+}
+
+.message h3 {
+    margin-top: 50px;
+    color: purple;
+    font-weight: bold;
+}
+
+.message p {
+    font-size: 20px;
+    font-style: italic;
+    margin: 30px;
+    font-weight: bold;
+}
+
+.buttons {
+    text-align: center;
+    margin: 20px;
+}
+
+.buttons button {
+    height: 70px;
+    width: 200px;
+    margin-left: 50px;
+    font-size: 20px;
+    box-shadow: 2px 2px 5px rgba(240, 57, 33, 0.945);
+}
+
+#donate-now {
+    color: white;
+    background-color: red;
+}
+
+.message-donations {
+    text-align: center;
+}
+
+.message-donations h3 {
+    color: purple;
+    font-weight: bold;
+    margin-top: 35px;
+}
+
+.registation button {
+    height: 60px;
+    width: 300px;
+    font-size: 20px;
+    box-shadow: 2px 2px 5px rgba(33, 240, 60, 0.945);
+    margin-top: 20px;
+}
+
+#regis {
+    background-color: rgb(18, 155, 18);
+}

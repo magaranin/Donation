@@ -3,5 +3,30 @@
 
 {% block body %}
 
+<div class="flex-container">
+    <div class="carousel">
+        <div class="image-container" id="imgs">
+            <img src="/media/images/image3.jpg">
+            <img src="/media/images/image2.jpg">
+            <img src="/media/images/image1.jpg">
+        </div>
+    </div>
+    <div class="message-donations">
+        <h3>Be part of our family and help us support other families by donating the items that you don't need. 
+            If you need help or want to donate please register below:</h3>
+        <div class="registation">
+            <a href="{% url 'register' %}"><button id="regis">Register HERE</button></a>
+        </div>
+        <div class="message">
+            <p>"Alone we can do so little; together we can do so much." - Helen Keller</p>
+            <h3>Help us deliver our donations!!!</h3>
+        </div>
+        <div class="buttons">
+            <button id="donate-now">Donate Now</button>
+            <button id="donate-monthly">Donate Monthly</button>
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}
