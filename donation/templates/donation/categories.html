@@ -1,0 +1,15 @@
+{% extends "donation/layout.html" %}
+
+
+{% block body %}
+    <div class="categories">
+        <ul>
+            {% for category in categories %}
+            <button class="category_button">
+                <strong><a href="/donation/?category_id={{ category.id }}">{{ category.name }}</a></strong>
+            </button>
+            {% endfor %}
+        </ul>  
+    </div>
+ 
+{% endblock %}    

@@ -2,7 +2,40 @@
 {% load static %}
 
 {% block body %}
+{% load static %}
+{% if user.is_authenticated %}
 
+    {% for listing in listings %}
+    <div class="listing-details">
+        <div class="images">
+            <a href="{% url 'listing' listing.id %}">
+                <img src="/media/{{ listing.images }}">
+            </a>
+        </div>
+        <div class="content">
+            <div>
+                <div>
+                    <a href="{% url 'listing' listing.id %}">
+                        <strong>{{ listing.title }}</strong>
+                    </a>    
+                </div>
+                <div>
+                    <strong>Description: </strong>{{ listing.description|truncatechars:45 }}
+                </div>
+                <div>
+                    <strong>Posted by: </strong>{{ listing.owner }}
+                </div>
+                <div>
+                    <strong></strong>{{ listing.created_date }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+        <h6>The are no listings available!</h6>
+    {% endfor %}
+
+{% else %}
 <div class="flex-container">
     <div class="carousel">
         <div class="image-container" id="imgs">
@@ -12,7 +45,7 @@
         </div>
     </div>
     <div class="message-donations">
-        <h3>Be part of our family and help us support other families by donating the items that you don't need. 
+        <h3>Be part of our family and help us support other families in need <br> by donating the items that you don't need. <br>
             If you need help or want to donate please register below:</h3>
         <div class="registation">
             <a href="{% url 'register' %}"><button id="regis">Register HERE</button></a>
@@ -28,5 +61,6 @@
     </div>
 </div>
 
+{% endif %}
 
 {% endblock %}

@@ -4,12 +4,14 @@ from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.db import IntegrityError
 
-from .models import User
-
-# Create your views here.
+from .models import User, Category, ListingOffer
+from .forms import NewListingForm
+from django.contrib.auth.decorators import login_required
 
 def index(request):
-    return render(request, "donation/index.html")
+    return render(request, "donation/index.html", {
+        "listings": ListingOffer.objects.all()
+    })
 
 def login_view(request):
     if request.method == "POST":
@@ -70,3 +72,32 @@ def register(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
+
+def categories(request):
+    return render(request,"donation/categories.html", {
+        "categories": Category.objects.all()
+    })
+
+
+def listing(request, listing_id):
+    listing = ListingOffer.objects.get(pk=listing_id)
+    return render(request, "donation/listing.html", {
+        "listing": listing
+    })
+
+
+@login_required
+def add_new_listing(request):
+    if request.method == "POST":
+        form = NewListingForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_listing_offer = form.save(commit=False)
+            new_listing_offer.owner = request.user
+            # new_listing_offer = form.save()
+            new_listing_offer.save()
+            form.save_m2m()
+            return HttpResponseRedirect(reverse("listing", kwargs={'listing_id': new_listing_offer.id}))
+    else:
+        return render(request, "donation/add_new_listing.html", {
+            "form": NewListingForm()
+        })

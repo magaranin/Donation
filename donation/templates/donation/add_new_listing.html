@@ -1,0 +1,15 @@
+{% extends "donation/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+    <form action="{% url 'add_new_listing' %}" enctype="multipart/form-data" method="POST">
+        <div class="new_list">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <p>NEED A SPONSON TO DELIVER YOUR ITEMS CHECK <a href="https://postcalc.usps.com/Calculator/Index?country=10440" target="_blank" rel="noreferrer noopener">HERE </a> THE DELIVERY PRICE AND ENTER IT ABOVE</p>
+            <input type="submit">
+        </div>
+    </form>
+
+{% endblock %}
