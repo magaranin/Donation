@@ -3,10 +3,12 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.db import IntegrityError
+from django.conf import settings
 
 from .models import User, Category, ListingOffer
 from .forms import NewListingForm
 from django.contrib.auth.decorators import login_required
+from django.core.files.storage import FileSystemStorage
 
 def index(request):
     return render(request, "donation/index.html", {
@@ -38,6 +40,7 @@ def register(request):
         email = request.POST["email"]
         first_name = request.POST["first_name"]
         last_name = request.POST["last_name"]
+        profile_image = request.FILES.get("profile_image")
         location_country = request.POST["location_country"]
         location_city = request.POST["location_city"]
 
@@ -57,6 +60,7 @@ def register(request):
                 password = password, 
                 first_name = first_name, 
                 last_name = last_name, 
+                profile_image = profile_image,
                 location_country = location_country, 
                 location_city = location_city)
             user.save()
@@ -86,6 +90,17 @@ def listing(request, listing_id):
     })
 
 
+def listings(request):
+    select_cat=int(request.GET.get('category_id', -1))
+    if select_cat >= 1:
+        category = Category.objects.get(pk=select_cat)
+        listings = ListingOffer.objects.filter(categories__in=category)
+    else:
+        listings = ListingOffer.objects.filter()
+    return render(request, "donation/listings.html", {
+        "listings": listings
+    })
+
 @login_required
 def add_new_listing(request):
     if request.method == "POST":
@@ -93,7 +108,6 @@ def add_new_listing(request):
         if form.is_valid():
             new_listing_offer = form.save(commit=False)
             new_listing_offer.owner = request.user
-            # new_listing_offer = form.save()
             new_listing_offer.save()
             form.save_m2m()
             return HttpResponseRedirect(reverse("listing", kwargs={'listing_id': new_listing_offer.id}))
@@ -101,3 +115,10 @@ def add_new_listing(request):
         return render(request, "donation/add_new_listing.html", {
             "form": NewListingForm()
         })
+
+@login_required
+def profile_page(request, user_id):
+    user = User.objects.get(pk=user_id)
+    return render(request, "donation/profile_page.html", {
+        "user": user,
+    })

@@ -5,36 +5,38 @@
     <div class="listing-details">
         <div class="images">
             <a href="{% url 'listing' listing.id %}">
-                <img src="/media/{{ listing.images }}">
+                <picture src="/media/{{ listing.images }}">
             </a>
         </div>
         <div class="listing-content">
-            <a href="{% url 'listing' listing.id %}">
-                <strong>{{ listing.title }}</strong><br>
-            </a>
             <div>
-                <strong>Description: </strong> {{ listing.description}}    
-            </div>
-            <div>
-                <strong>Categories: </strong> 
-                {% for category in listing.categories.all %} 
-                    {{ category.name }} 
-                {% endfor %}
-            </div>
-            <div>
-                <strong>Posted by: </strong> {{ listing.owner }}
-            </div>
-            <div>
-                <strong>Posted on: </strong> {{ listing.post_date }}  
-            </div>
-            <div>
-                <strong>Delivery Payment: </strong> {{ listing.delivery_payment }}  
-            </div>
-            <div>
+                <a href="{% url 'listing' listing.id %}">
+                    <strong>{{ listing.title }}</strong><br>
+                </a>
                 <div>
-                    {% if listing.price is not None %}
-                    <strong>Delivery Cost: </strong> ${{ listing.price }}
-                    {% endif %} 
+                    <strong>Description: </strong> {{ listing.description}}    
+                </div>
+                <div>
+                    <strong>Categories: </strong> 
+                    {% for category in listing.categories.all %} 
+                        {{ category.name }} 
+                    {% endfor %}
+                </div>
+                <div>
+                    <strong>Posted by: </strong> {{ listing.owner }}
+                </div>
+                <div>
+                    <strong>Posted on: </strong> {{ listing.post_date }}  
+                </div>
+                <div>
+                    <strong>Delivery Payment: </strong> {{ listing.delivery_payment }}  
+                </div>
+                <div>
+                    <div>
+                        {% if listing.price is not None %}
+                        <strong>Delivery Cost: </strong> ${{ listing.price }}
+                        {% endif %} 
+                    </div>
                 </div>
             </div>
         </div>

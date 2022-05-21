@@ -6,7 +6,7 @@
         <ul>
             {% for category in categories %}
             <button class="category_button">
-                <strong><a href="/donation/?category_id={{ category.id }}">{{ category.name }}</a></strong>
+                <strong><a href="/listings?category_id={{ category.id }}">{{ category.name }}</a></strong>
             </button>
             {% endfor %}
         </ul>  

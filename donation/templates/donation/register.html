@@ -6,7 +6,7 @@
         <div>{{ message }}</div>
     {% endif %}
 
-    <form action="{% url 'register' %}" method="POST">
+    <form action="{% url 'register' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group">
             <input class="form-control" autofocus type="text" name="username" placeholder="Username">
@@ -25,6 +25,9 @@
         </div>
         <div class="form-group">
             <input class="form-control" type="text" name="last_name" placeholder="Last Name">
+        </div>
+        <div class="form-group">
+            <input class="form-control-file" type="file" accept="image/*" name="profile_image">
         </div>
         <div class="form-group">
             <input class="form-control" type="text" name="location_country" placeholder="Country">

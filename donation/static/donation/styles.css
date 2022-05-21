@@ -27,6 +27,7 @@ img {
     width: 900px;
     height: 620px;
     object-fit: cover;
+    max-width: 100%;
 }
 
 .carousel {
@@ -117,4 +118,29 @@ img {
 
 .navbar-nav #log_out {
     margin-left: auto;
+}
+
+.location, 
+.offer_count {
+    height: 20px;
+    width: 20px;
+}
+
+.request_count {
+    height: 25px;
+    width: 80px;
+}
+
+.profile_info {
+    font-size: 30px;
+}
+
+.intro {
+    font-size: 24px;
+    margin: 10px;
+}
+
+.email_address {
+    height: 20px;
+    width: 20px;
 }

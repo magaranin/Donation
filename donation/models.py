@@ -8,9 +8,10 @@ class User(AbstractUser):
     location_country = models.CharField( max_length=30, blank=True)
     location_city = models.CharField( max_length=30, blank=True)
     profile_image = models.ImageField(upload_to='profile_images', blank=True, default=None, null=True)
+    
 
     def __str__(self):
-        return f"{self.username} {self.first_name} {self.last_name}"
+        return super().get_full_name()
 
 class Category(models.Model):
     name = models.CharField(max_length=30)
