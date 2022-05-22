@@ -93,10 +93,9 @@ def listing(request, listing_id):
 def listings(request):
     select_cat=int(request.GET.get('category_id', -1))
     if select_cat >= 1:
-        category = Category.objects.get(pk=select_cat)
-        listings = ListingOffer.objects.filter(categories__in=category)
+        listings = ListingOffer.objects.filter(categories__id__contains = select_cat)
     else:
-        listings = ListingOffer.objects.filter()
+        listings = ListingOffer.objects.all()
     return render(request, "donation/listings.html", {
         "listings": listings
     })
