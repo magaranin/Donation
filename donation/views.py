@@ -98,7 +98,7 @@ def listings(request):
     elif donation == "claimed":
         listings = ListingOffer.objects.filter(recipient__isnull=False)
     else:
-        listings = ListingOffer.objects.all()
+        listings = ListingOffer.objects.filter(recipient__isnull=True)
     return render(request, "donation/listings.html", {
         "listings": listings
     })
