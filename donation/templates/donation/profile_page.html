@@ -1,0 +1,52 @@
+{% extends "donation/layout.html" %}
+{% load static %}
+{% block body %}
+
+{% if user.is_authenticated and user == user.username %}
+
+<div class="profile_page">
+    <a href="{% url 'profile_page' user.id %}">
+        <img src="/media{{ user.profile_image.url }}">
+    </a>&nbsp;
+</div>
+    <div class="profile_info">
+        <strong>{{ user.first_name }}</strong>
+        <strong>&nbsp;{{ user.last_name }}</strong> 
+    </div>
+    <div class="intro">Intro</div>
+    <div class="email_address">
+        <strong>&nbsp;Email: </strong> {{ user.email_address }}
+    </div>
+    <p><img class="location" src="https://static.xx.fbcdn.net/rsrc.php/v3/yG/r/1sW88456A0B.png">
+    &nbsp;Lives in<strong>&nbsp;{{ user.location_country }},</strong> 
+    <strong>&nbsp;{{ user.location_city}}</strong></p>
+    <p><img class="offer_count" src="https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/S0aTxIHuoYO.png">
+    &nbsp;Number of donations: <strong>&nbsp;</strong></p>
+    <p><img class="request_count" src="https://www.smartsign.com/img/lg/D/Received-Shipping-Packaging-Label-D1191.gif">
+    &nbsp;Donations: <strong>&nbsp;</strong></p>
+
+{% else %}
+
+<div class="profile_page">
+    <a href="{% url 'profile_page' user.id %}">
+        <img src="{{ user.profile_image.url }}">
+    </a>&nbsp;
+
+</div>
+    <div class="profile_info">
+        <strong>{{ user.first_name }}</strong>
+        <strong>&nbsp;{{ user.last_name }}</strong> 
+    </div>
+    <div class="intro">Intro</div>
+    <p><img class="email_address" src="/media/email_address/email_address.png">
+    &nbsp;Email: <strong>{{ user.email }}</strong></p>
+    <p><img class="location" src="https://static.xx.fbcdn.net/rsrc.php/v3/yG/r/1sW88456A0B.png">
+    &nbsp;Lives in<strong>&nbsp;{{ user.location_country }},</strong> 
+    <strong>&nbsp;{{ user.location_city}}</strong></p>
+    <p><img class="offer_count" src="https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/S0aTxIHuoYO.png">
+    &nbsp;Number of donations: <strong>&nbsp;</strong></p>
+    <p><img class="request_count" src="https://www.smartsign.com/img/lg/D/Received-Shipping-Packaging-Label-D1191.gif">
+    &nbsp;Donations: <strong>&nbsp;</strong></p>
+{% endif %}
+
+{% endblock %}
