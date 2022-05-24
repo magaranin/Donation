@@ -92,8 +92,11 @@ def listing(request, listing_id):
 
 def listings(request):
     select_cat=int(request.GET.get('category_id', -1))
+    donation= request.GET.get('show', '')
     if select_cat >= 1:
         listings = ListingOffer.objects.filter(categories__id__contains = select_cat)
+    elif donation == "claimed":
+        listings = ListingOffer.objects.filter(recipient__isnull=False)
     else:
         listings = ListingOffer.objects.all()
     return render(request, "donation/listings.html", {
@@ -121,3 +124,25 @@ def profile_page(request, user_id):
     return render(request, "donation/profile_page.html", {
         "user": user,
     })
+
+@login_required
+def claim_offer(request, listing_id):
+    if request.method =="POST":
+        listing = ListingOffer.objects.get(pk=listing_id)
+        if (listing.delivery_cost == 0):
+            recipient = request.user
+            listing.recipient = recipient
+            listing.save()
+            return render(request, "donation/listing.html", {
+                "listing": listing,
+                "message": "Congratulation, your delivery is paid by the donor!"
+            })
+        else:
+            return render(request, "donation/listing.html", {
+                "listing": listing,
+                "message": "Please keep in mind that you need to pay for delivery!"
+            })
+    else:
+        return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
+
+

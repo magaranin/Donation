@@ -26,8 +26,10 @@ class Gender(models.Model):
         return f"{self.name}"
 
 
-class DeliveryPayment(models.Model):
-    name = models.CharField(max_length=30)
+class WhoPays(models.Model):
+    name = models.CharField(max_length = 200)
+    class Meta: 
+        verbose_name_plural = "Who Pays"  
     def __str__(self):
         return f"{self.name}"
 
@@ -38,6 +40,7 @@ class ListingOffer(models.Model):
     images = models.FileField(upload_to='listing_images', blank=True, default=None)
     categories = models.ManyToManyField(Category)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="owner")
-    delivery_payment = models.ForeignKey(DeliveryPayment, on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=5, decimal_places=2)
-    gender = models.ForeignKey(Gender, on_delete=models.CASCADE, null= True)
+    who_pays = models.ForeignKey(WhoPays, on_delete=models.CASCADE)
+    delivery_cost = models.DecimalField(max_digits=5, decimal_places=2)
+    gender = models.ForeignKey(Gender, on_delete=models.CASCADE, null=True)
+    recipient = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="recipient")

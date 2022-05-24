@@ -5,7 +5,7 @@
     <div class="listing-details">
         <div class="images">
             <a href="{% url 'listing' listing.id %}">
-                <picture src="/media/{{ listing.images }}">
+                <img src="/media/{{ listing.images }}">
             </a>
         </div>
         <div class="listing-content">
@@ -29,15 +29,26 @@
                     <strong>Posted on: </strong> {{ listing.post_date }}  
                 </div>
                 <div>
-                    <strong>Delivery Payment: </strong> {{ listing.delivery_payment }}  
+                    <strong>Who Pays: </strong> {{ listing.who_pays }}  
                 </div>
                 <div>
                     <div>
-                        {% if listing.price is not None %}
-                        <strong>Delivery Cost: </strong> ${{ listing.price }}
+                        {% if listing.delivery_cost is not None %}
+                        <strong>Delivery Cost: </strong> ${{ listing.delivery_cost }}
                         {% endif %} 
                     </div>
                 </div>
+                {% if user.is_authenticated and user != listing.owner %}
+                <div class="message">
+                    {% if message %}
+                        {{message}}
+                    {% endif %}
+                </div>
+                    <form action="{% url 'claim_offer' listing.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type='submit'>Claim Donation</button>
+                    </form>
+                {% endif %}
             </div>
         </div>
     </div>

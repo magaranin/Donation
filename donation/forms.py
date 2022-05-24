@@ -6,12 +6,13 @@ from django.forms import Textarea, ModelForm
 class NewListingForm(forms.ModelForm):
     class Meta:
         model = ListingOffer
-        fields = ['title', 'description', 'gender', 'categories', 'images', 'delivery_payment', 'price']
+        fields = ['title', 'description', 'gender', 'categories', 'images', 'who_pays', 'delivery_cost']
         label = {
-            'price': ''
+            'delivery_cost': ''
         }
         widgets = {
             'title':Textarea(attrs={'class': 'form-control', 'rows' : 1}),
             'description': Textarea(attrs={'class': 'form-control', 'rows' : 2}),
             'images': forms.FileInput(attrs={'id':'myfile','class':'form-control-file','multiple':True}),
         }
+
