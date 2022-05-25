@@ -25,6 +25,11 @@
             <div>
                 <strong>Posted on: </strong>{{ listing.post_date }}
             </div>
+            {% if listing.recipient is not None %}
+            <div>
+                <strong>Claimed by: </strong><a href="{% url 'profile_page' listing.recipient.id %}">{{ listing.recipient }}</a> on {{ listing.claimed_time }}
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>

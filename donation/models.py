@@ -44,3 +44,4 @@ class ListingOffer(models.Model):
     delivery_cost = models.DecimalField(max_digits=5, decimal_places=2)
     gender = models.ForeignKey(Gender, on_delete=models.CASCADE, null=True)
     recipient = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="recipient")
+    claimed_time = models.DateTimeField(null=True)

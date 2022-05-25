@@ -3,10 +3,10 @@
 
 {% block body %}
 {% load static %}
+
 {% if user.is_authenticated %}
 
     {% for listing in listings %}
-        {% if user == listing.owner %}
         <div class="listing-details">
             <div class="images">
                 <a href="{% url 'listing' listing.id %}">
@@ -32,7 +32,6 @@
                 </div>
             </div>
         </div>
-        {% endif %}
     {% empty %}
         <h6>The are no listings available!</h6>
     {% endfor %}

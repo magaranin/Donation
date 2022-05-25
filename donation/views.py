@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.db import IntegrityError
 from django.conf import settings
+from datetime import datetime
 
 from .models import User, Category, ListingOffer
 from .forms import NewListingForm
@@ -11,8 +12,11 @@ from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 
 def index(request):
+    listings = None
+    if request.user.is_authenticated:
+        listings = ListingOffer.objects.filter(owner = request.user)
     return render(request, "donation/index.html", {
-        "listings": ListingOffer.objects.all()
+        "listings": listings
     })
 
 def login_view(request):
@@ -129,19 +133,13 @@ def profile_page(request, user_id):
 def claim_offer(request, listing_id):
     if request.method =="POST":
         listing = ListingOffer.objects.get(pk=listing_id)
-        if (listing.delivery_cost == 0):
-            recipient = request.user
-            listing.recipient = recipient
-            listing.save()
-            return render(request, "donation/listing.html", {
-                "listing": listing,
-                "message": "Congratulation, your delivery is paid by the donor!"
-            })
-        else:
-            return render(request, "donation/listing.html", {
-                "listing": listing,
-                "message": "Please keep in mind that you need to pay for delivery!"
-            })
+        listing.claimed_time = datetime.now()
+        recipient = request.user
+        listing.recipient = recipient
+        listing.save()
+        return render(request, "donation/listing.html", {
+            "listing": listing,
+        })
     else:
         return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
 
