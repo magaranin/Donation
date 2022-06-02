@@ -1,6 +1,7 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 from django.urls import reverse
 from django.db import IntegrityError
 from django.conf import settings
@@ -10,6 +11,13 @@ from .models import User, Category, ListingOffer
 from .forms import NewListingForm
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
+
+from django.views.decorators.csrf import csrf_exempt
+import stripe
+from django.shortcuts import render
+
+stripe.api_key = settings.STRIPE_PRIVATE_KEY
+YOUR_DOMAIN = 'http://127.0.0.1:8000'
 
 def index(request):
     listings = None
@@ -143,4 +151,31 @@ def claim_offer(request, listing_id):
     else:
         return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
 
+#success view
+def success(request):
+    return render(request,'donation/success.html')
+    
+#cancel view
+def cancel(request):
+    return render(request,'donation/cancel.html')
 
+#checkout donation
+@csrf_exempt
+def donation_checkout(request):
+    session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items = [{
+        'price_data': {
+            'currency': 'usd',
+            'product_data': {
+            'name': ':)',
+            },
+            'unit_amount': 5000,
+        },
+        'quantity': 1,
+        }],
+        mode='payment',
+        success_url = YOUR_DOMAIN + '/success',
+        cancel_url= YOUR_DOMAIN + '/cancel',
+    )
+    return HttpResponseRedirect(session.url)

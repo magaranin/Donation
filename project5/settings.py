@@ -55,8 +55,8 @@ ROOT_URLCONF = 'project5.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
         'APP_DIRS': True,
+        'DIRS': [],
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -120,6 +120,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STRIPE_PUBLIC_KEY='pk_test_51L5DKxFloIfufRf77x6KGxEaAIfftIHUYuFouWk1tuVL7iM8Oc1vwdpWY5yzzk78NhJQnxD0mZU2E1TdEUBQybdi00QHewbNNq'
+STRIPE_PRIVATE_KEY='sk_test_51L5DKxFloIfufRf7YTPWBYaEQCiypkFDYe65hCkmkKtS6OHjLa8APm5cUIXMvqAdxm80yYtv2VZ8tTPx3B5t5JAC006zKKrzQY'
 
 MEDIA_URL = '/media/'
 

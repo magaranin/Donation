@@ -13,5 +13,8 @@ urlpatterns = [
     path("listings", views.listings, name="listings"),
     path("add_new_listing", views.add_new_listing, name="add_new_listing"),
     path("profile_page/<int:user_id>", views.profile_page, name="profile_page"),
-    path("claim_offer/<int:listing_id>", views.claim_offer, name="claim_offer")
+    path("claim_offer/<int:listing_id>", views.claim_offer, name="claim_offer"),
+    path("donation_checkout", views.donation_checkout, name="donation_checkout"),
+    path("success", views.success, name="success"),
+    path("cancel", views.cancel, name="cancel")
 ]

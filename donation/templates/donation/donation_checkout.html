@@ -1,0 +1,22 @@
+{% extends "donation/layout.html" %}
+{% load static %}
+
+{% block body %}
+{% load static %}
+
+<h3>Giving Is The Greatest Act Of Grace</h3>
+
+{% for price in prices %}
+
+<div>
+    <h5>${{ price.get_display_price }}</h5>
+    <form action="{% url 'donation_checkout' price.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit">Donate</button>
+    </form>
+</div>
+
+{% endfor %}
+
+
+{% endblock %}
