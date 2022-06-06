@@ -8,8 +8,6 @@ class User(AbstractUser):
     location_country = models.CharField( max_length=30, blank=True)
     location_city = models.CharField( max_length=30, blank=True)
     profile_image = models.ImageField(upload_to='profile_images', blank=True, default=None, null=True)
-    
-
     def __str__(self):
         return super().get_full_name()
 
@@ -45,3 +43,21 @@ class ListingOffer(models.Model):
     gender = models.ForeignKey(Gender, on_delete=models.CASCADE, null=True)
     recipient = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="recipient")
     claimed_time = models.DateTimeField(null=True)
+    def __str__(self):
+        return f"{self.title}"
+
+class Price(models.Model):
+    # stripe_price_id = models.CharField(max_length=100)
+    price = models.IntegerField(default=0)  # cents
+	
+    def get_display_price(self):
+        return "{0:.0f}".format(self.price / 100)
+    def __str__(self):
+        return f"{self.price}"
+
+class Country(models.Model):
+    name = models.CharField(max_length=30)
+    class Meta: 
+        verbose_name_plural = "Countries"  
+    def __str__(self):
+        return f"{self.name}"

@@ -2,21 +2,50 @@
 {% load static %}
 
 {% block body %}
-{% load static %}
 
-<h3>Giving Is The Greatest Act Of Grace</h3>
+<div class="donate_form">
+    <div class="message">Giving Is The Greatest Act Of Grace</div>
+    <div class="monthly_one_time">
+        <button class="button" id ="monthly">
+            <span>Monthly</span>
+        </button>
+        <button class="button" id ="one_time">
+            <span>One-time</span>
+        </button>
+    </div>
+    <div class="usd">Donation amount (USD)</div>
 
-{% for price in prices %}
+    <div class="amount_buttons">
+        {% for price in prices %}
+        <button class="button">
+            ${{ price.get_display_price }}
+            <form style="display: none" action="{% url 'stripe_checkout' price.id %}" method="POST">
+                {% csrf_token %}
+            </form>
+        </button>
+        {% endfor %}
+    </div>
+    
+    <div class="amount_other">
+        <span>Other: $</span>
+        <form action="{% url 'stripe_checkout' 0 %}" method="POST">
+            <input type="text" name="value_price" id="value_price"> 
+        </form>
+    </div>
 
-<div>
-    <h5>${{ price.get_display_price }}</h5>
-    <form action="{% url 'donation_checkout' price.id %}" method="POST">
-        {% csrf_token %}
-        <button type="submit">Donate</button>
-    </form>
+    <div class="countries">
+        <span>*Country: </span>
+        <select class="country_button">
+            {% for country in countries %}
+                {% if country.name == 'United States' %}
+                    <option selected="selected">{{ country.name }}</option>
+                {% else %}
+                    <option>{{ country.name }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    <button class="donate" type="button">Donate</button>
 </div>
-
-{% endfor %}
-
 
 {% endblock %}

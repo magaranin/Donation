@@ -7,7 +7,7 @@ from django.db import IntegrityError
 from django.conf import settings
 from datetime import datetime
 
-from .models import User, Category, ListingOffer
+from .models import User, Category, ListingOffer, Price, Country
 from .forms import NewListingForm
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
@@ -17,7 +17,6 @@ import stripe
 from django.shortcuts import render
 
 stripe.api_key = settings.STRIPE_PRIVATE_KEY
-YOUR_DOMAIN = 'http://127.0.0.1:8000'
 
 def index(request):
     listings = None
@@ -161,16 +160,22 @@ def cancel(request):
 
 #checkout donation
 @csrf_exempt
-def donation_checkout(request):
+def stripe_checkout(request, price_id):
+    YOUR_DOMAIN = 'http://127.0.0.1:8000'
+    if price_id == 0:
+        price = int(request.POST["value_price"]) * 100
+    else:
+        price_info = Price.objects.get(pk=price_id)
+        price = price_info.price
     session = stripe.checkout.Session.create(
         payment_method_types=['card'],
         line_items = [{
         'price_data': {
             'currency': 'usd',
             'product_data': {
-            'name': ':)',
+            'name': 'We appreciate your donation',
             },
-            'unit_amount': 5000,
+            'unit_amount': price,
         },
         'quantity': 1,
         }],
@@ -179,3 +184,11 @@ def donation_checkout(request):
         cancel_url= YOUR_DOMAIN + '/cancel',
     )
     return HttpResponseRedirect(session.url)
+
+def donation_checkout(request):
+    prices = Price.objects.all()
+    countries = Country.objects.order_by("name").all()
+    return render(request, 'donation/donation_checkout.html', {
+        'countries': countries,
+        'prices': prices
+    })
