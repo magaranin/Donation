@@ -151,7 +151,7 @@ img {
     padding: 10px;
 }
 
-.monthly_one_time,
+.paymentFrequency,
 .amount_buttons,
 .amount_other {
     display: inline-flex;
@@ -207,16 +207,11 @@ img {
     margin-top: 13px;
 }
 
-#one_time {
-    background-color: #135cb0;
-    color: white;
-}
-
 .button:hover {
     background-color: rgb(195, 240, 241);
 }
 
-.button.selected:hover,
+.selected:hover,
 .selected {
     color: white;
     background-color: #135cb0;

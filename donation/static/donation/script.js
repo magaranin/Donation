@@ -7,6 +7,13 @@ const amountButtonsContainer = document.querySelector('.amount_buttons');
 const amountOtherForm = document.querySelector('.amount_other form');
 const input = document.querySelector('#value_price');
 
+const paymentFrequency = document.querySelector('.paymentFrequency');
+const donationFrequencyButtons = document.querySelectorAll('.paymentFrequency .button');
+
+const mainPagePaymentFrequency = document.querySelector('.main_page_payment_frequency');
+
+const donateMonthly = document.getElementById('monthly');
+
 let idx = 0;
 let interval = setInterval(run, 2000);
 
@@ -26,14 +33,28 @@ function changeImage() {
 }
 
 amountButtonsContainer.addEventListener('click', (e) => {
-    removeSelected();
+    removeSelected(amountButtons);
     e.target.classList.add('selected');
-})
+});
+
+paymentFrequency.addEventListener('click', (e) => {
+    removeSelected(donationFrequencyButtons);
+    const button = e.target;
+    button.classList.add('selected');
+    const forms = document.querySelectorAll('form');
+    forms.forEach((form) => {
+        if (button.id === "monthly") {
+            form.action = form.action.replace("/payment", "/subscription");
+        } else {
+            form.action = form.action.replace("/subscription", "/payment");
+        }
+        console.log(form.action);
+    });
+});
 
 input.addEventListener("focus", (event) => {
-    removeSelected();
+    removeSelected(amountButtons);
   });
-
 
 donateBtn.addEventListener('click', (e) => {
     const form = amountButtonsContainer.querySelector('.button.selected form');
@@ -43,7 +64,7 @@ donateBtn.addEventListener('click', (e) => {
     }
     else {
         if (!isNaN(otherValue) && otherValue >= 1 && otherValue <= 100000) {
-            removeSelected()
+            removeSelected(amountButtons);
             amountOtherForm.submit();
         }
         else {
@@ -52,8 +73,12 @@ donateBtn.addEventListener('click', (e) => {
     }
 })
 
-function removeSelected() {
-    for (let i = 0; i < amountButtons.length; i++) {
-        amountButtons[i].classList.remove('selected');
+function removeSelected(buttons) {
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove('selected');
     }
+}
+
+if(window.location.href.indexOf('subscription') > 0) {
+    donateMonthly.click();
 }

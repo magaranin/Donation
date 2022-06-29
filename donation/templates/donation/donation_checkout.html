@@ -5,12 +5,12 @@
 
 <div class="donate_form">
     <div class="message">Giving Is The Greatest Act Of Grace</div>
-    <div class="monthly_one_time">
+    <div class="paymentFrequency">
         <button class="button" id ="monthly">
-            <span>Monthly</span>
+            Monthly
         </button>
-        <button class="button" id ="one_time">
-            <span>One-time</span>
+        <button class="button selected" id ="one_time">
+            One-time
         </button>
     </div>
     <div class="usd">Donation amount (USD)</div>
@@ -19,7 +19,7 @@
         {% for price in prices %}
         <button class="button">
             ${{ price.get_display_price }}
-            <form style="display: none" action="{% url 'stripe_checkout' price.id %}" method="POST">
+            <form style="display: none" action="{% url 'stripe_checkout' session_mode='payment' price_id=price.id %}" method="POST">
                 {% csrf_token %}
             </form>
         </button>
@@ -28,7 +28,7 @@
     
     <div class="amount_other">
         <span>Other: $</span>
-        <form action="{% url 'stripe_checkout' 0 %}" method="POST">
+        <form action="{% url 'stripe_checkout' session_mode='payment' price_id=0 %}" method="POST">
             <input type="text" name="value_price" id="value_price"> 
         </form>
     </div>

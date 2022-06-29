@@ -160,26 +160,57 @@ def cancel(request):
 
 #checkout donation
 @csrf_exempt
-def stripe_checkout(request, price_id):
+def stripe_checkout(request, session_mode, price_id):
     YOUR_DOMAIN = 'http://127.0.0.1:8000'
     if price_id == 0:
         price = int(request.POST["value_price"]) * 100
     else:
         price_info = Price.objects.get(pk=price_id)
         price = price_info.price
+    checkout_mode = 'payment'
+    payment_item = {
+        'price_data': {
+            'currency': 'usd',
+            'product_data': {
+                'name': 'We appreciate your donation',
+            },
+            'unit_amount': price,
+        },
+        'quantity': 1
+    }
+    if (session_mode == 'subscription'):
+        payment_item['price_data']['recurring'] = {
+            'interval': 'month'
+        }
+        payment_item['price_data']['product_data']['name'] = 'monthly donations'
+
+    session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items = [payment_item],
+        mode = session_mode,
+        success_url = YOUR_DOMAIN + '/success',
+        cancel_url= YOUR_DOMAIN + '/cancel',
+    )
+    return HttpResponseRedirect(session.url)
+
+
+def requiring_payment(price_id):
+    YOUR_DOMAIN = 'http://127.0.0.1:8000'
+    price_info = Price.objects.get(pk=price_id)
+    price = price_info.price
     session = stripe.checkout.Session.create(
         payment_method_types=['card'],
         line_items = [{
         'price_data': {
             'currency': 'usd',
             'product_data': {
-            'name': 'We appreciate your donation',
+            'name': 'We appreciate your monthly donation',
             },
             'unit_amount': price,
         },
         'quantity': 1,
         }],
-        mode='payment',
+        mode = 'subscription',
         success_url = YOUR_DOMAIN + '/success',
         cancel_url= YOUR_DOMAIN + '/cancel',
     )
@@ -192,3 +223,4 @@ def donation_checkout(request):
         'countries': countries,
         'prices': prices
     })
+

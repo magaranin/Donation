@@ -55,9 +55,9 @@
             <p>"Alone we can do so little; together we can do so much." - Helen Keller</p>
             <h3>Help us deliver our donations!!!</h3>
         </div>
-        <div class="buttons">
-            <a href="{% url 'donation_checkout' %}"><button id="donate-now">Donate Now</button></a>
-            <button id="donate-monthly">Donate Monthly</button>
+        <div class="main_page_payment_frequency">
+            <a href="{% url 'donation_checkout' %}"><button class="button" id="donate-now">Donate Now</button></a>
+            <a href="{% url 'donation_checkout' %}?subscription"><button class="button" id="donate-monthly">Donate Monthly</button></a>
         </div>
     </div>
 </div>
