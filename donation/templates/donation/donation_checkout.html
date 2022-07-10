@@ -34,10 +34,10 @@
     </div>
 
     <div class="countries">
-        <span>*Country: </span>
-        <select class="country_button">
+        <span>Country: </span>
+        <select class="country_button" name="country_name">
             {% for country in countries %}
-                {% if country.name == 'United States' %}
+                {% if country.name == 'United States of America' %}
                     <option selected="selected">{{ country.name }}</option>
                 {% else %}
                     <option>{{ country.name }}</option>

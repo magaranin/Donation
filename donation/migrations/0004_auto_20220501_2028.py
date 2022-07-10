@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('donation', '0003_auto_20220501_1826'),
+        ('donation', '0002_user_profile_image'),
     ]
 
     operations = [

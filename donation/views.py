@@ -52,7 +52,7 @@ def register(request):
         first_name = request.POST["first_name"]
         last_name = request.POST["last_name"]
         profile_image = request.FILES.get("profile_image")
-        location_country = request.POST["location_country"]
+        location_country = request.POST["country_name"]
         location_city = request.POST["location_city"]
 
         # Ensure password matches confirmation
@@ -82,7 +82,9 @@ def register(request):
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:
-        return render(request, "donation/register.html")
+        return render(request, "donation/register.html", {
+            'countries': Country.objects.all()
+        })
 
 def logout_view(request):
     logout(request)
@@ -92,7 +94,6 @@ def categories(request):
     return render(request,"donation/categories.html", {
         "categories": Category.objects.all()
     })
-
 
 def listing(request, listing_id):
     listing = ListingOffer.objects.get(pk=listing_id)

@@ -71,7 +71,7 @@ class Migration(migrations.Migration):
                 ('post_date', models.DateTimeField(auto_now=True)),
                 ('images', models.FileField(blank=True, default=None, upload_to='listing_images')),
                 ('price', models.DecimalField(decimal_places=2, max_digits=5)),
-                ('category', models.ManyToManyField(to='donation.Category')),
+                ('categories', models.ManyToManyField(to='donation.Category')),
                 ('delivery_payment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='donation.DeliveryPayment')),
                 ('owner', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='owner', to=settings.AUTH_USER_MODEL)),
             ],
