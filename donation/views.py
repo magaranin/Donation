@@ -133,8 +133,13 @@ def add_new_listing(request):
 @login_required
 def profile_page(request, user_id):
     user = User.objects.get(pk=user_id)
+    donated_listings = ListingOffer.objects.filter(owner = user)
+    received_listings = ListingOffer.objects.filter(recipient = user)
+    print("Count: " + str(donated_listings.count()))
     return render(request, "donation/profile_page.html", {
         "user": user,
+        "donated_listings_count": donated_listings.count(),
+        "received_listings_count": received_listings.count(),
     })
 
 @login_required

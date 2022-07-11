@@ -38,15 +38,15 @@
         <strong>&nbsp;{{ user.last_name }}</strong> 
     </div>
     <div class="intro">Intro</div>
-    <p><img class="email_address" src="/media/images/email_address.png">
+    <p><img class="email_address" src="/media/images/email_address.jpg">
     &nbsp;Email: <strong>{{ user.email }}</strong></p>
     <p><img class="location" src="https://static.xx.fbcdn.net/rsrc.php/v3/yG/r/1sW88456A0B.png">
     &nbsp;Lives in<strong>&nbsp;{{ user.location_country }},</strong> 
     <strong>&nbsp;{{ user.location_city}}</strong></p>
     <p><img class="offer_count" src="https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/S0aTxIHuoYO.png">
-    &nbsp;Number of donations: <strong>&nbsp;</strong></p>
+    &nbsp;Number of donations: <strong>&nbsp;</strong>{{ donated_listings_count }}</p>
     <p><img class="request_count" src="https://www.smartsign.com/img/lg/D/Received-Shipping-Packaging-Label-D1191.gif">
-    &nbsp;Donations: <strong>&nbsp;</strong></p>
+    &nbsp;Donations: <strong>&nbsp;</strong>{{ received_listings_count }}</p>
 {% endif %}
 
 {% endblock %}
