@@ -7,7 +7,7 @@ from django.db import IntegrityError
 from django.conf import settings
 from datetime import datetime
 
-from .models import User, Category, ListingOffer, Price, Country
+from .models import User, Category, ListingOffer, Price, Country, Gender, WhoPays
 from .forms import NewListingForm
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
@@ -127,7 +127,10 @@ def add_new_listing(request):
             return HttpResponseRedirect(reverse("listing", kwargs={'listing_id': new_listing_offer.id}))
     else:
         return render(request, "donation/add_new_listing.html", {
-            "form": NewListingForm()
+            "form": NewListingForm(initial={
+                "gender": Gender.objects.get(id=1),
+                "who_pays": WhoPays.objects.get(id=1)
+            })
         })
 
 @login_required
@@ -135,7 +138,6 @@ def profile_page(request, user_id):
     user = User.objects.get(pk=user_id)
     donated_listings = ListingOffer.objects.filter(owner = user)
     received_listings = ListingOffer.objects.filter(recipient = user)
-    print("Count: " + str(donated_listings.count()))
     return render(request, "donation/profile_page.html", {
         "user": user,
         "donated_listings_count": donated_listings.count(),
@@ -229,4 +231,9 @@ def donation_checkout(request):
         'countries': countries,
         'prices': prices
     })
+
+#success view
+def about_us(request):
+    return render(request,'donation/about_us.html')
+
 

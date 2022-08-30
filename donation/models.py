@@ -22,13 +22,13 @@ class Category(models.Model):
         return f"{self.name}"
 
 class Gender(models.Model):
-    name = models.CharField(max_length=30, default="Girl") 
+    name = models.CharField(max_length=30) 
     def __str__(self):
         return f"{self.name}"
 
 
 class WhoPays(models.Model):
-    name = models.CharField(max_length = 200, default="Willing to pay for delivery")
+    name = models.CharField(max_length = 200)
     class Meta: 
         verbose_name_plural = "Who Pays"  
     def __str__(self):
@@ -42,7 +42,7 @@ class ListingOffer(models.Model):
     categories = models.ManyToManyField(Category)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="owner")
     who_pays = models.ForeignKey(WhoPays, on_delete=models.CASCADE)
-    delivery_cost = models.DecimalField(max_digits=5, decimal_places=2)
+    shipping_cost = models.DecimalField(max_digits=5, decimal_places=2, default="0")
     gender = models.ForeignKey(Gender, on_delete=models.CASCADE, null=True)
     recipient = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="recipient")
     claimed_time = models.DateTimeField(null=True)

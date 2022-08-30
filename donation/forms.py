@@ -6,9 +6,9 @@ from django.forms import Textarea, ModelForm
 class NewListingForm(forms.ModelForm):
     class Meta:
         model = ListingOffer
-        fields = ['title', 'description', 'gender', 'categories', 'images', 'who_pays', 'delivery_cost']
+        fields = ['title', 'description', 'gender', 'categories', 'images', 'who_pays', 'shipping_cost']
         label = {
-            'delivery_cost': ''
+            'shipping_cost': ''
         }
         widgets = {
             'title':Textarea(attrs={'class': 'form-control', 'rows' : 1}),

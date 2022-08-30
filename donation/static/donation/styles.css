@@ -222,3 +222,37 @@ img {
     background-color: brown;
     color:white;
 }
+
+.about-us-image-container img {
+    width: 100%;
+}
+
+.about-us-image-container {
+    position: relative;
+    text-align: center;
+    color: black;
+}
+
+/* Centered text */
+.centered-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+.our-impact {
+    text-align: center;
+    color: red;
+    font-weight: 800;
+}
+
+.message-our-impact {
+    margin: 10px;
+}
+
+.message-our-impact h4 {
+    margin-top: 50px;
+    color: purple;
+    font-weight: bold;
+}

@@ -33,17 +33,17 @@
                 </div>
                 <div>
                     <div>
-                        {% if listing.delivery_cost is not None %}
-                        <strong>Delivery Cost: </strong> ${{ listing.delivery_cost }}
+                        {% if listing.shipping_cost is not None %}
+                        <strong>Delivery Cost: </strong> ${{ listing.shipping_cost }}
                         {% endif %} 
                     </div>
                 </div>
                 {% if user.is_authenticated and user != listing.owner %}
                 <div class="message">
-                    {% if listing.delivery_cost == 0 %}
+                    {% if listing.shipping_cost == 0 %}
                         <strong> Congratulation, your delivery is paid by the donor! </strong>
                     {% else %}
-                        <strong> Please keep in mind that you need to pay ${{ listing.delivery_cost }} delivery fee! </strong>
+                        <strong> Please keep in mind that you need to pay ${{ listing.shipping_cost }} delivery fee! </strong>
                     {% endif %}
                 </div>
                     <form action="{% url 'claim_offer' listing.id %}" method="POST">
