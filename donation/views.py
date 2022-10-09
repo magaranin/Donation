@@ -7,7 +7,7 @@ from django.db import IntegrityError
 from django.conf import settings
 from datetime import datetime
 
-from .models import User, Category, ListingOffer, Price, Country, Gender, WhoPays
+from .models import User, Category, ListingOffer, Price, Country, Gender, Payment
 from .forms import NewListingForm
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
@@ -128,8 +128,7 @@ def add_new_listing(request):
     else:
         return render(request, "donation/add_new_listing.html", {
             "form": NewListingForm(initial={
-                "gender": Gender.objects.get(id=1),
-                "who_pays": WhoPays.objects.get(id=1)
+                "gender": Gender.objects.get(id=1)
             })
         })
 
@@ -144,22 +143,12 @@ def profile_page(request, user_id):
         "received_listings_count": received_listings.count(),
     })
 
-@login_required
-def claim_offer(request, listing_id):
-    if request.method =="POST":
-        listing = ListingOffer.objects.get(pk=listing_id)
-        listing.claimed_time = datetime.now()
-        recipient = request.user
-        listing.recipient = recipient
-        listing.save()
-        return render(request, "donation/listing.html", {
-            "listing": listing,
-        })
-    else:
-        return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
-
 #success view
 def success(request):
+    amount = int(request.GET.get('amount'))/100
+    payment = Payment()
+    payment.amount = amount
+    payment.save()
     return render(request,'donation/success.html')
     
 #cancel view
@@ -196,7 +185,7 @@ def stripe_checkout(request, session_mode, price_id):
         payment_method_types=['card'],
         line_items = [payment_item],
         mode = session_mode,
-        success_url = YOUR_DOMAIN + '/success',
+        success_url = YOUR_DOMAIN + '/success?amount=' + str(price),
         cancel_url= YOUR_DOMAIN + '/cancel',
     )
     return HttpResponseRedirect(session.url)
@@ -234,6 +223,45 @@ def donation_checkout(request):
 
 #success view
 def about_us(request):
-    return render(request,'donation/about_us.html')
+    return render(request,'donation/about_us.html', {
+        'total_shipping_cost': total_shipping_cost(),
+        'total_received_amount': total_received_amount()
+    })
 
+# total cost for pending items for shipping 
+def total_shipping_cost():
+    claimed_listings = ListingOffer.objects.filter(status = "pending", recipient__isnull=False)
+    shipping_cost = 0
+    for listing in claimed_listings:
+        shipping_cost += listing.shipping_cost
+    return shipping_cost
+
+#total received amount
+def total_received_amount():
+    payments = Payment.objects.all()
+    amount = 0
+    for payment in payments:
+        amount += payment.amount
+    return amount
+
+#claim donation
+@login_required
+def claim_offer(request, listing_id, is_paying):
+    if request.method == "POST":
+        listing = ListingOffer.objects.get(pk=listing_id)
+        listing.claimed_time = datetime.now()
+        # if "sponsor" in request.POST:
+        if bool(is_paying) != True:
+            listing.status = "pending"
+        else:
+            listing.status = "claimed"
+
+        recipient = request.user
+        listing.recipient = recipient
+        listing.save()
+        return render(request, "donation/listing.html", {
+            "listing": listing,
+        })
+    else:
+        return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
 

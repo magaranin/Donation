@@ -199,10 +199,6 @@ img {
     height: 35px;
 }
 
-.message {
-    text-align: center;
-}
-
 .usd {
     margin-top: 13px;
 }
@@ -255,4 +251,31 @@ img {
     margin-top: 50px;
     color: purple;
     font-weight: bold;
+}
+
+.flex-container {
+    margin: 35px;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 20px;
+    text-align: center;
+  }
+  
+  .needed-funds {
+    background-color: #ddb1b1;
+    padding: 10px;
+    flex: 50%;
+  }
+  
+  .received-funds {
+    background-color: rgb(72, 214, 195);
+    padding: 10px;
+    flex: 50%;
+  }
+
+@media (max-width: 800px) {
+    .needed-funds, 
+    .received-funds {
+      flex: 100%;
+    }
 }

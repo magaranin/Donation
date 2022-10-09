@@ -42,14 +42,29 @@
                 <div class="message">
                     {% if listing.shipping_cost == 0 %}
                         <strong> Congratulation, your delivery is paid by the donor! </strong>
+                        <div class="flex-container" id="option_claim">
+                            <div>Ready to Claim?</div>
+                            <form action="{% url 'claim_offer' listing_id=listing.id is_paying='False' %}" method="POST">
+                                {% csrf_token %}
+                                <br><button type='submit'>Get It Now</button>
+                            </form>
+                        </div>
                     {% else %}
-                        <strong> Please keep in mind that you need to pay ${{ listing.shipping_cost }} delivery fee! </strong>
+                        <strong> Please keep in mind that you need to pay ${{ listing.shipping_cost }} delivery fee! </strong><br>
+                        <div class="flex-container" id="option_claim">
+                            <div>Ready to Claim?</div>
+                            <form action="{% url 'claim_offer' listing_id=listing.id is_paying='True' %}" method="POST">
+                                {% csrf_token %}
+                                <button type='submit' name="paying">Get It Now</button>
+                            </form>
+                            <form action="{% url 'claim_offer' listing_id=listing.id is_paying='False' %}" method="POST">
+                                {% csrf_token %}
+                                <button type='submit' name="sponsor">Request a Sponsor</button>
+                            </form>
+                        </div>
                     {% endif %}
                 </div>
-                    <form action="{% url 'claim_offer' listing.id %}" method="POST">
-                        {% csrf_token %}
-                        <button type='submit'>Claim Donation</button>
-                    </form>
+
                 {% endif %}
             </div>
         </div>
