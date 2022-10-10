@@ -68,5 +68,7 @@ class Country(models.Model):
     def __str__(self):
         return f"{self.name}"
 
-class Payment(models.Model):
+class Transaction(models.Model):
     amount = models.DecimalField(max_digits=15, decimal_places=2)
+    def __str__(self):
+        return f"{self.amount}"

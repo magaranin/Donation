@@ -44,9 +44,9 @@ paymentFrequency.addEventListener('click', (e) => {
     const forms = document.querySelectorAll('form');
     forms.forEach((form) => {
         if (button.id === "monthly") {
-            form.action = form.action.replace("/payment", "/subscription");
+            form.action = form.action.replace("/transaction", "/subscription");
         } else {
-            form.action = form.action.replace("/subscription", "/payment");
+            form.action = form.action.replace("/subscription", "/transaction");
         }
         console.log(form.action);
     });

@@ -7,7 +7,7 @@ from django.db import IntegrityError
 from django.conf import settings
 from datetime import datetime
 
-from .models import User, Category, ListingOffer, Price, Country, Gender, Payment
+from .models import User, Category, ListingOffer, Price, Country, Gender, Transaction
 from .forms import NewListingForm
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
@@ -146,9 +146,10 @@ def profile_page(request, user_id):
 #success view
 def success(request):
     amount = int(request.GET.get('amount'))/100
-    payment = Payment()
-    payment.amount = amount
-    payment.save()
+    transaction = Transaction()
+    transaction.amount = amount
+    transaction.save()
+    pay_shipping()
     return render(request,'donation/success.html')
     
 #cancel view
@@ -191,27 +192,27 @@ def stripe_checkout(request, session_mode, price_id):
     return HttpResponseRedirect(session.url)
 
 
-def requiring_payment(price_id):
-    YOUR_DOMAIN = 'http://127.0.0.1:8000'
-    price_info = Price.objects.get(pk=price_id)
-    price = price_info.price
-    session = stripe.checkout.Session.create(
-        payment_method_types=['card'],
-        line_items = [{
-        'price_data': {
-            'currency': 'usd',
-            'product_data': {
-            'name': 'We appreciate your monthly donation',
-            },
-            'unit_amount': price,
-        },
-        'quantity': 1,
-        }],
-        mode = 'subscription',
-        success_url = YOUR_DOMAIN + '/success',
-        cancel_url= YOUR_DOMAIN + '/cancel',
-    )
-    return HttpResponseRedirect(session.url)
+# def requiring_payment(price_id):
+#     YOUR_DOMAIN = 'http://127.0.0.1:8000'
+#     price_info = Price.objects.get(pk=price_id)
+#     price = price_info.price
+#     session = stripe.checkout.Session.create(
+#         payment_method_types=['card'],
+#         line_items = [{
+#         'price_data': {
+#             'currency': 'usd',
+#             'product_data': {
+#             'name': 'We appreciate your monthly donation',
+#             },
+#             'unit_amount': price,
+#         },
+#         'quantity': 1,
+#         }],
+#         mode = 'subscription',
+#         success_url = YOUR_DOMAIN + '/success',
+#         cancel_url= YOUR_DOMAIN + '/cancel',
+#     )
+#     return HttpResponseRedirect(session.url)
 
 def donation_checkout(request):
     prices = Price.objects.all()
@@ -238,27 +239,61 @@ def total_shipping_cost():
 
 #total received amount
 def total_received_amount():
-    payments = Payment.objects.all()
+    transactions = Transaction.objects.all()
     amount = 0
-    for payment in payments:
-        amount += payment.amount
+    for transaction in transactions:
+        if transaction.amount > 0:
+            amount += transaction.amount
     return amount
+
+#try to pay for shipping
+def pay_shipping():
+    print("entered the pay shipping")
+    funds_available = get_funds_available()
+    print(funds_available)
+    claimed_listings = ListingOffer.objects.filter(status = "pending", recipient__isnull=False)
+    for listing in claimed_listings:
+        print(listing.title)
+        print(listing.shipping_cost)
+        if funds_available >= listing.shipping_cost:
+            transaction = Transaction()
+            transaction.amount = -listing.shipping_cost
+            transaction.save()
+            print(f"after save {funds_available}")
+            funds_available -= listing.shipping_cost
+            print(f"after deduction {funds_available}")
+            listing.status = "claimed" 
+            listing.save() 
+    print("end the pay shipping")      
+    return funds_available
+
+#get funds available
+def get_funds_available():
+    transactions = Transaction.objects.all()
+    amount_available = 0
+    for transaction in transactions:
+        amount_available += transaction.amount
+    return amount_available
 
 #claim donation
 @login_required
 def claim_offer(request, listing_id, is_paying):
+    print(f"first {is_paying}")
     if request.method == "POST":
         listing = ListingOffer.objects.get(pk=listing_id)
         listing.claimed_time = datetime.now()
         # if "sponsor" in request.POST:
-        if bool(is_paying) != True:
+        if is_paying.lower() != "true":
             listing.status = "pending"
+            print(f"{listing.title}  pending status {listing.status}")
         else:
             listing.status = "claimed"
-
+            print(f"{listing.title} claimed status {listing.status}")
         recipient = request.user
         listing.recipient = recipient
         listing.save()
+        print(f"{listing.title}, {listing.status}")
+        pay_shipping()
         return render(request, "donation/listing.html", {
             "listing": listing,
         })
