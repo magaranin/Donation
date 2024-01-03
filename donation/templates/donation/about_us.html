@@ -17,7 +17,11 @@
 </div>
 <div class="flex-container">
     <div class="needed-funds">
-        <p>Please help us collect ${{total_shipping_cost}} and ship our packages that families are waiting for.</p>
+        {% if total_shipping_cost == 0 %}
+            <p>Please help us collect funds and ship packages that families are waiting for.</p>
+        {% else %}
+            <p>Please help us collect ${{total_shipping_cost}} and ship our packages that families are waiting for.</p>
+        {% endif %}
     </div>
     <div class="received-funds">
         <p>Thank you for you generous donations!!! Together we collected ${{total_received_amount}}!</p>
