@@ -1,12 +1,13 @@
 {% extends "donation/layout.html" %}
 {% load static %}
-{% block body %}
+{% block main_content %}
 
+<div class="container">
 {% for listing in listings %}
 <div class="listing-details">
     <div class="images">
-        <a href="{% url 'listing' listing.id %}">
-            <img src="/media/{{ listing.images }}">
+        <a class="listing_image_link" href="{% url 'listing' listing.id %}">
+            <img class="listing_image" src="/media/{{ listing.images }}">
         </a>
     </div>
     <div class="content">
@@ -36,5 +37,6 @@
 {% empty %}
     <h6>The are no listings available!</h6>
 {% endfor %}
+</div>
 
 {% endblock %}

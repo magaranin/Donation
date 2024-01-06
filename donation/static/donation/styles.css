@@ -10,7 +10,7 @@ body {
     overflow: hidden;
 }
 
-.body {
+.main_content {
     overflow-y: auto;
     height: 95vh;
 }
@@ -21,6 +21,10 @@ body {
 
 .navbar .navbar-brand {
     color: red;
+}
+
+.navbar-nav #log_out {
+    margin-left: auto;
 }
 
 img {
@@ -36,6 +40,38 @@ img {
     overflow: hidden;
 }
 
+/* style for container */
+.container {
+    display: flex;
+    flex-direction: row;
+    width: 90vw; 
+    flex-wrap: wrap; /* Allow items to wrap onto the next line */
+}
+
+.listing-details {
+    padding: 10px;
+}
+
+/* style for image class within the container */
+.listing-details .images {
+    max-width: 100%; /* Ensure the image doesn't exceed its natural size */
+    height: 300px; /*Maintain the aspect ratio of the image */
+}
+
+/* style for description class within the container */
+.listing-details .listing-content {
+    margin-top: 10px;
+    width: 100%; /* Set the width of the description to 100% */
+}
+
+.listing_image_link {
+    display: inline-block;
+}
+
+.listing_image {
+    object-fit: cover; /* Maintain aspect ratio and cover the container */
+    max-height: 300px;
+}
 .image-container {
     display: flex; /* put img into a horizontal flex row */
     transform: translateX(0);
@@ -114,10 +150,6 @@ img {
     width: 200px;
     border-radius: 6px;
     margin-left: 10px;
-}
-
-.navbar-nav #log_out {
-    margin-left: auto;
 }
 
 .location, 
@@ -273,9 +305,27 @@ img {
     flex: 50%;
   }
 
-@media (max-width: 800px) {
+  @media only screen and (max-width: 600px) {
     .needed-funds, 
     .received-funds {
       flex: 100%;
     }
 }
+  
+  @media screen and (min-width: 768px) {
+    .listing-details {
+      flex-basis: calc(50% - 20px);
+    }
+  }
+  
+  @media screen and (min-width: 992px) {
+    .listing-details {
+      flex-basis: calc(33% - 20px);
+    }
+  }
+  
+  @media screen and (min-width: 1200px) {
+    .listing-details {
+      flex-basis: calc(20% - 20px);
+    }
+  }
