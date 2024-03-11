@@ -10,11 +10,11 @@
         </div>
         <div class="listing-content">
             <div>
-                <a href="{% url 'listing' listing.id %}">
-                    <strong>{{ listing.title }}</strong><br>
-                </a>
                 <div>
-                    <strong>Description: </strong> {{ listing.description}}    
+                    <strong> <span id="listing_title">{{ listing.title }}</span></strong><br>
+                </div>             
+                <div>
+                    <strong>Description: </strong> <span id="listing_description">{{ listing.description}}</span>    
                 </div>
                 <div>
                     <strong>Categories: </strong> 
@@ -29,7 +29,7 @@
                     <strong>Posted on: </strong> {{ listing.post_date }}  
                 </div>
                 <div>
-                    <strong>Who Pays: </strong> {{ listing.who_pays }}  
+                    <strong>Who Pays: </strong><span id="listing_who_pays">{{ listing.get_who_pays_display }}</span> 
                 </div>
                 <div>
                     <div>
@@ -64,9 +64,11 @@
                         </div>
                     {% endif %}
                 </div>
-
                 {% endif %}
             </div>
+            {% if user.is_authenticated and user == listing.owner %}
+            <button class="edit_button btn btn-primary btn-sm" onclick="editListing({{ listing.id }})">Edit</button>
+            {% endif %}
         </div>
     </div>
 

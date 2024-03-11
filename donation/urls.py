@@ -21,4 +21,5 @@ urlpatterns = [
     path("cancel", views.cancel, name="cancel"),
     path("donation_checkout", views.donation_checkout, name="donation_checkout"),
     path("about_us", views.about_us, name="about_us"),
+    path("listings/<int:listing_id>", views.update_listing, name ="update_listing"),
 ]

@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.db import IntegrityError
 from django.conf import settings
 from datetime import datetime
+import json
 
 from .models import User, Category, ListingOffer, Price, Country, Gender, Transaction
 from .forms import NewListingForm
@@ -108,7 +109,7 @@ def listings(request):
     if select_cat >= 1:
         listings = ListingOffer.objects.filter(categories__id__contains = select_cat)
     elif donation == "claimed":
-        listings = ListingOffer.objects.filter(recipient__isnull=False)
+        listings = ListingOffer.objects.filter(recipient__isnull=False, owner = request.user)
     else:
         listings = ListingOffer.objects.filter(recipient__isnull=True)
     return render(request, "donation/listings.html", {
@@ -190,29 +191,6 @@ def stripe_checkout(request, session_mode, price_id):
         cancel_url= YOUR_DOMAIN + '/cancel',
     )
     return HttpResponseRedirect(session.url)
-
-
-# def requiring_payment(price_id):
-#     YOUR_DOMAIN = 'http://127.0.0.1:8000'
-#     price_info = Price.objects.get(pk=price_id)
-#     price = price_info.price
-#     session = stripe.checkout.Session.create(
-#         payment_method_types=['card'],
-#         line_items = [{
-#         'price_data': {
-#             'currency': 'usd',
-#             'product_data': {
-#             'name': 'We appreciate your monthly donation',
-#             },
-#             'unit_amount': price,
-#         },
-#         'quantity': 1,
-#         }],
-#         mode = 'subscription',
-#         success_url = YOUR_DOMAIN + '/success',
-#         cancel_url= YOUR_DOMAIN + '/cancel',
-#     )
-#     return HttpResponseRedirect(session.url)
 
 def donation_checkout(request):
     prices = Price.objects.all()
@@ -300,3 +278,32 @@ def claim_offer(request, listing_id, is_paying):
     else:
         return HttpResponseRedirect(reverse("listing", args=(listing_id,)))
 
+
+@csrf_exempt
+@login_required
+def update_listing(request, listing_id):
+    #request post
+    try:
+        listing = ListingOffer.objects.get(owner=request.user, pk=listing_id)
+    except ListingOffer.DoesNotExist:
+        return JsonResponse({"error" : "Listing not found"}, status=404)
+
+    #update the description 
+    if request.method == "PUT":
+        data = json.loads(request.body)
+        #title, description, who pays 
+        if data.get("title") is not None:
+            listing.title = data["title"]
+        if data.get("description") is not None:
+            listing.description = data["description"]
+        # if data.get("who_pays") is not None:
+        #     listing.who_pays = data["who_pays"]
+        listing.save()
+        return JsonResponse({ "status": "ok" }, status=200)
+
+     #post must be via PUT
+    else:
+        return JsonResponse({
+            "error": "PUT request required."
+        }, status=400)
+    

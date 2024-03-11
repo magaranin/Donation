@@ -29,14 +29,19 @@ function changeImage() {
     else if (idx < 0) {
         idx = img.length - 1;
     }
-    imgs.style.transform = `translateX(${-idx * 900}px)`
+    if (imgs) {
+        imgs.style.transform = `translateX(${-idx * 900}px)`
+    }
 }
 
-amountButtonsContainer.addEventListener('click', (e) => {
+if (amountButtonsContainer) {
+    amountButtonsContainer.addEventListener('click', (e) => {
     removeSelected(amountButtons);
     e.target.classList.add('selected');
 });
+}
 
+if (paymentFrequency) {
 paymentFrequency.addEventListener('click', (e) => {
     removeSelected(donationFrequencyButtons);
     const button = e.target;
@@ -51,11 +56,15 @@ paymentFrequency.addEventListener('click', (e) => {
         console.log(form.action);
     });
 });
+}
 
+if (input) {
 input.addEventListener("focus", (event) => {
     removeSelected(amountButtons);
   });
+}
 
+if (donateBtn) {
 donateBtn.addEventListener('click', (e) => {
     const form = amountButtonsContainer.querySelector('.button.selected form');
     const otherValue = Number(document.getElementById('value_price').value);
@@ -71,7 +80,8 @@ donateBtn.addEventListener('click', (e) => {
             alert("Please enter an amount that you would like to donate!");
         }
     }
-})
+});
+}
 
 function removeSelected(buttons) {
     for (let i = 0; i < buttons.length; i++) {
@@ -81,4 +91,65 @@ function removeSelected(buttons) {
 
 if(window.location.href.indexOf('subscription') > 0) {
     donateMonthly.click();
+}
+
+function editListing(listing_id){
+    const titleElement = document.getElementById("listing_title");
+    const oldTitle = titleElement.innerText;
+    const descriptionElement = document.getElementById("listing_description");
+    const oldDescription = descriptionElement.innerText;
+    // const whoPays = document.getElementById("listing_who_pays");
+    // const oldWhoPays = whoPays.innerText;
+    let titleTextbox = document.createElement("textarea");
+    titleTextbox.value = oldTitle;
+    titleTextbox.id = "title_textarea";
+    titleTextbox.className = "";
+    let descriptionTextbox = document.createElement("textarea");
+    descriptionTextbox.value = oldDescription;
+    descriptionTextbox.id = "description_textarea";
+    descriptionTextbox.className = "";
+    // let whoPaysTextbox = document.createElement("option");
+    // whoPaysTextbox.value = listingWhoPays;
+    // whoPaysTextbox.id = "whoPays_textarea";
+    // whoPaysTextbox.className = "";
+    let submitButton = document.createElement("button");
+    submitButton.className = "btn btn-primary btn-sm saveBtn";
+    submitButton.innerHTML = "Save";
+    submitButton.onclick = () => { 
+        const newTitle = document.querySelector('#title_textarea').value;
+        const newDescription = document.querySelector('#description_textarea').value;
+        // const newWhoPays = document.querySelector('#whoPays_textarea').value;
+        updateListing(listing_id, newTitle, newDescription);     
+    }
+
+    titleElement.innerHTML = "";
+    titleElement.appendChild(titleTextbox);
+    descriptionElement.innerHTML = "";
+    descriptionElement.appendChild(descriptionTextbox);
+    const contentElement = document.querySelector('.listing-content');
+    contentElement.appendChild(submitButton);
+    document.querySelector('.edit_button').style.display = 'none';
+
+}
+
+function updateListing(listing_id, newTitle, newDescription) {
+    fetch(`/listings/${listing_id}`, {
+        method: "PUT",
+        body: JSON.stringify({
+            title: newTitle,
+            description: newDescription
+        })
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.error) {
+            alert(result.error);
+        }
+        else {
+            document.querySelector(`#listing_title`).innerHTML = newTitle;
+            document.querySelector(`#listing_description`).innerHTML = newDescription;
+        }
+    })
+    document.querySelector('.edit_button').style.display = 'block';
+    document.querySelector('.saveBtn').style.display = 'none';
 }
