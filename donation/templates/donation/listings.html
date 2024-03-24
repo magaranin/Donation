@@ -20,6 +20,7 @@
             <div>
                 <strong>Description: </strong>{{ listing.description|truncatechars:45 }}
             </div>
+            <!--
             <div>
                 <strong>Posted by: </strong><a href="{% url 'profile_page' listing.owner.id %}"> {{ listing.owner }} </a>
             </div>
@@ -30,6 +31,7 @@
             <div>
                 <strong>Claimed by: </strong><a href="{% url 'profile_page' listing.recipient.id %}">{{ listing.recipient.first_name }} {{ listing.recipient.last_name }}</a> on {{ listing.claimed_time }}
             </div>
+            -->
             {% endif %}
         </div>
     </div>

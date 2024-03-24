@@ -37,6 +37,11 @@
                         <strong>Delivery Cost: </strong> ${{ listing.shipping_cost }}
                         {% endif %} 
                     </div>
+                    <div>
+                        {% if listing.recipient is not None %}
+                        <strong>Claimed by: </strong><a href="{% url 'profile_page' listing.recipient.id %}">{{ listing.recipient.first_name }} {{ listing.recipient.last_name }}</a> on {{ listing.claimed_time }}
+                        {% endif %} 
+                    </div>
                 </div>
                 {% if user.is_authenticated and user != listing.owner %}
                 <div class="message">
