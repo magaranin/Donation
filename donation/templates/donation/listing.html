@@ -23,7 +23,7 @@
                     {% endfor %}
                 </div>
                 <div>
-                    <strong>Posted by: </strong> {{ listing.owner }}
+                    <strong>Posted by: </strong> <a href="{% url 'profile_page' listing.owner.id %}">{{ listing.owner}}</a>  
                 </div>
                 <div>
                     <strong>Posted on: </strong> {{ listing.post_date }}  
@@ -43,7 +43,7 @@
                         {% endif %} 
                     </div>
                 </div>
-                {% if user.is_authenticated and user != listing.owner %}
+                {% if user.is_authenticated and user != listing.owner and listing.status == "active" %}
                 <div class="message">
                     {% if listing.shipping_cost == 0 %}
                         <strong> Congratulation, your delivery is paid by the donor! </strong>

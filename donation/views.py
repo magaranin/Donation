@@ -109,7 +109,7 @@ def listings(request):
     if select_cat >= 1:
         listings = ListingOffer.objects.filter(categories__id__contains = select_cat)
     elif donation == "claimed":
-        listings = ListingOffer.objects.filter(recipient__isnull=False, owner = request.user)
+        listings = ListingOffer.objects.filter(recipient = request.user)
     else:
         listings = ListingOffer.objects.filter(recipient__isnull=True)
     return render(request, "donation/listings.html", {
@@ -288,16 +288,13 @@ def update_listing(request, listing_id):
     except ListingOffer.DoesNotExist:
         return JsonResponse({"error" : "Listing not found"}, status=404)
 
-    #update the description 
+    #update title and description 
     if request.method == "PUT":
         data = json.loads(request.body)
-        #title, description, who pays 
         if data.get("title") is not None:
             listing.title = data["title"]
         if data.get("description") is not None:
             listing.description = data["description"]
-        # if data.get("who_pays") is not None:
-        #     listing.who_pays = data["who_pays"]
         listing.save()
         return JsonResponse({ "status": "ok" }, status=200)
 
