@@ -170,13 +170,14 @@ body {
 }
 
 .location, 
-.offer_count {
-    height: 20px;
-    width: 20px;
+.offer_count,
+.email_address {
+    height: 40px;
+    width: 40px;
 }
 
 .request_count {
-    height: 25px;
+    height: 40px;
     width: 80px;
 }
 
@@ -189,10 +190,6 @@ body {
     margin: 10px;
 }
 
-.email_address {
-    height: 20px;
-    width: 20px;
-}
 
 .donate_form {
     height: 600px;
