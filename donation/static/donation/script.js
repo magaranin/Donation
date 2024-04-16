@@ -30,7 +30,7 @@ function changeImage() {
         idx = img.length - 1;
     }
     if (imgs) {
-        imgs.style.transform = `translateX(${-idx * 900}px)`
+        imgs.style.transform = `translateX(${-idx * 100}%)`
     }
 }
 
@@ -98,8 +98,6 @@ function editListing(listing_id){
     const oldTitle = titleElement.innerText;
     const descriptionElement = document.getElementById("listing_description");
     const oldDescription = descriptionElement.innerText;
-    // const whoPays = document.getElementById("listing_who_pays");
-    // const oldWhoPays = whoPays.innerText;
     let titleTextbox = document.createElement("textarea");
     titleTextbox.value = oldTitle;
     titleTextbox.id = "title_textarea";
@@ -108,17 +106,12 @@ function editListing(listing_id){
     descriptionTextbox.value = oldDescription;
     descriptionTextbox.id = "description_textarea";
     descriptionTextbox.className = "";
-    // let whoPaysTextbox = document.createElement("option");
-    // whoPaysTextbox.value = listingWhoPays;
-    // whoPaysTextbox.id = "whoPays_textarea";
-    // whoPaysTextbox.className = "";
     let submitButton = document.createElement("button");
     submitButton.className = "btn btn-primary btn-sm saveBtn";
     submitButton.innerHTML = "Save";
     submitButton.onclick = () => { 
         const newTitle = document.querySelector('#title_textarea').value;
         const newDescription = document.querySelector('#description_textarea').value;
-        // const newWhoPays = document.querySelector('#whoPays_textarea').value;
         updateListing(listing_id, newTitle, newDescription);     
     }
 

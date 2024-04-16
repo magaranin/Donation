@@ -4,6 +4,16 @@
     box-sizing: border-box;
 }
 
+.user {
+    position: absolute;
+    right: 0px;
+    padding: 10px;
+}
+
+.user a {
+    text-decoration: none;
+}
+
 body {
     background-color: #fafafa;
     font-family: 'Roboto', sans-serif;
@@ -15,9 +25,18 @@ body {
     height: 95vh;
 }
 
-.navbar {
-    height: 5vh;
+.navbar-nav {
+    background-color: whitesmoke;
+    width: fit-content;
+    border-radius: 10px;
+    padding: 0 10px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
+
+.navbar {
+    height: 60px;
+}
+
 
 .navbar .navbar-brand {
     color: red;
@@ -27,17 +46,21 @@ body {
     margin-left: auto;
 }
 
-img {
-    width: 900px;
-    height: 620px;
-    object-fit: cover;
+.carousel {
+    margin: 3vh auto 0 auto;
+    width: 470px;
+    overflow: hidden;
+}
+
+.profile_image {
+    width: 470px;
     max-width: 100%;
 }
 
-.carousel {
-    height: 620px;
-    width: 900px;
-    overflow: hidden;
+.carousel img {
+    width: 470px;
+    object-fit: cover;
+    max-width: 100%;
 }
 
 /* style for container */
@@ -76,15 +99,11 @@ img {
     display: flex; /* put img into a horizontal flex row */
     transform: translateX(0);
     transition: transform 0.5s ease-in-out;
-    margin-top: 50px;
-}
-
-.flex-container {
-    display: inline-flex;
 }
 
 .message-donations {
-    margin: 50px;
+    margin: auto;
+    margin: 3vh 3vw 3vh 3vw;
 }
 
 .message {
@@ -92,7 +111,6 @@ img {
 }
 
 .message h3 {
-    margin-top: 50px;
     color: purple;
     font-weight: bold;
 }
@@ -129,7 +147,6 @@ img {
 .message-donations h3 {
     color: purple;
     font-weight: bold;
-    margin-top: 35px;
 }
 
 .registation button {
@@ -256,18 +273,9 @@ img {
 }
 
 .about-us-image-container {
-    position: relative;
     text-align: center;
     color: black;
 }
-
-/* Centered text */
-.centered-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
 
 .our-impact {
     text-align: center;
@@ -286,9 +294,9 @@ img {
 }
 
 .flex-container {
-    margin: 35px;
+    margin: 0 3vw 3vh 3vw;
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: wrap-reverse;
     font-size: 20px;
     text-align: center;
   }
@@ -303,6 +311,16 @@ img {
     background-color: rgb(72, 214, 195);
     padding: 10px;
     flex: 50%;
+  }
+
+  .new_list,
+  .profile_page,
+  .profile_info,
+  .email_address,
+  .location,
+  .offer_count,
+  .request_count {
+    padding: 10px;
   }
 
   @media only screen and (max-width: 600px) {
@@ -329,3 +347,4 @@ img {
       flex-basis: calc(20% - 20px);
     }
   }
+
