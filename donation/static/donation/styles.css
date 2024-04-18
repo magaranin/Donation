@@ -316,7 +316,9 @@ body {
   .email_address,
   .location,
   .offer_count,
-  .request_count {
+  .request_count,
+  .container_success,
+  .container_cancel {
     padding: 10px;
   }
 
