@@ -193,7 +193,7 @@ body {
 
 .donate_form {
     height: 600px;
-    width: 600px;
+    max-width: 600px;
     padding: 10px;
 }
 
@@ -318,7 +318,8 @@ body {
   .offer_count,
   .request_count,
   .container_success,
-  .container_cancel {
+  .container_cancel,
+  .login {
     padding: 10px;
   }
 
