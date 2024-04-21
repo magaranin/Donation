@@ -71,7 +71,7 @@
                 </div>
                 {% endif %}
             </div>
-            {% if user.is_authenticated and user == listing.owner %}
+            {% if user.is_authenticated and user == listing.owner and listing.status == "active" %}
             <button class="edit_button btn btn-primary btn-sm" onclick="editListing({{ listing.id }})">Edit</button>
             {% endif %}
         </div>
