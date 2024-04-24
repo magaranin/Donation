@@ -86,8 +86,12 @@ Additionally, the website features an image carousel on the front page aimed at 
             3.	Install the stripe Python package using `pip install stripe`.
 
             4.	Insert the private and public keys from stripe developer dashboard in 'settings.py'.
-3. Start the Django web server using `python manage.py runserver`.
-4. Navigate to the website address and register for an account.
+
+3. Make and apply migrations by running `python manage.py makemigrations` and `python manage.py migrate`
+
+4. Start the Django web server using `python manage.py runserver`.
+
+5. Navigate to the website address and register for an account.
 
 ## Conclusion
     A big shoutout to the amazing team behind CS50's Web Programming with Python and JavaScript course! Your passion and commitment have inspired us all. Keep up the fantastic work! 😊
