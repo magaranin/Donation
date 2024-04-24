@@ -29,7 +29,11 @@
 
 <div class="profile_page">
     <a href="{% url 'profile_page' user.id %}">
+        {% if user.profile_image %}
         <img class="profile_image" src="{{ user.profile_image.url }}">
+        {% else %}
+        <img class="profile_image" src="/media/images/default.jpg">
+        {% endif %}
     </a>&nbsp;
 
 </div>

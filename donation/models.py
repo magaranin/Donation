@@ -7,7 +7,7 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     location_country = models.CharField( max_length=30, blank=True)
     location_city = models.CharField( max_length=30, blank=True)
-    profile_image = models.ImageField(upload_to='profile_images', default="images/default.jpg")
+    profile_image = models.ImageField(upload_to='profile_images', null=True)
     def __str__(self):
         if len(super().get_full_name()) > 0:
             return super().get_full_name()
